@@ -30,6 +30,8 @@ int main(void) {
             int player_name = player + 65; // 65 is the ascii code for 'A'
             printf("Au tour du joueur %d ! \n", player + 1);
 
+            board_print(&b, -1);
+
             int rolled_value = de();
 
             printf("On lance le dé... vous avez obtenu un %d !\n", rolled_value);
