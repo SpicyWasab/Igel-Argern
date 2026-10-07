@@ -21,7 +21,10 @@ int main(void) {
         { 0, 0, 0 }
     };
 
-    board_t* b = board_make(trapped_tiles);
+    trapped_tiles[0][0] == 1;
+
+    board_t b;
+    board_init(n, trapped_tiles);
 
     bool game_over = false;
     while(!game_over) {
@@ -53,11 +56,18 @@ int main(void) {
 
                 if(player_owning_cell != player_name) printf("Ce hérisson n'appartient pas à votre équipe.\n");
                 else {
-                    printf("Indiquez la direction du déplacement (T/B): ");
+                    printf("Indiquez la direction du déplacement (H/B): ");
                     char direction = 'N';
                     scanf(" %c", &direction);
 
-                    if(direction == 'T')
+                    if(direction == 'T') {
+                        if(line == 0) printf("Vous ne pouvez pas vous déplacer vers le haut.\n");
+                        else if(line == GRIDHEIGHT) printf("Vous ne pouvez pas vous déplacer vers le bas.\n");
+                        else {
+                            char hedgehog = board_pop(b, line, row); // technically, it's useless to store it since we know it's the player's one, but anyways
+                            board_push(b, line, row, hedgehog);
+                        }
+                    }
                 }
             }
 

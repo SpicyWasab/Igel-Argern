@@ -22,7 +22,7 @@ char board_top(board_t *b, int line, int row);
 
 char board_peek(board_t *b, int line, int row, int pos);
 
-board_t *board_make(int trapped[GRIDHEIGHT][GRIDWIDTH]);
+board_t board_init(board_t b, int trapped[GRIDHEIGHT][GRIDWIDTH]);
 
 
 void cell_print(board_t *b, int line, int row, int slice);

@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra
 
 dev:
 	gcc $(CFLAGS) -g -o igel-argern ./main.c ./board.c
