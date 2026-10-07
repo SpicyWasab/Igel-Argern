@@ -1,19 +1,7 @@
+#include "board.h"
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include "board.h"
-
-struct cell {
-  char stack[PLAYERCOUNT * HEDGEHOGS]; // Uppercase letters
-  int top; // index of the first hedgehog; -1 if the tile is empty
-  bool trapped;
-};
-typedef struct cell cell_t;
-
-struct board {
-  cell_t tiles[GRIDHEIGHT * GRIDWIDTH];
-};
-typedef struct board board_t;
 
 void board_push(board_t *b, int line, int row, char ctn) {
   int top = ++(b->tiles[GRIDWIDTH * line + row].top);
@@ -41,7 +29,7 @@ char board_peek(board_t *b, int line, int row, int pos) { // pos = 0 => top
   return b->tiles[GRIDWIDTH * line + row].stack[index];
 }
 
-board_t board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]) {
+void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]) {
   for (int line = 0; line < GRIDHEIGHT; line++) {
     for (int row = 0; row < GRIDWIDTH; row++) {
       if (trapped[line][row] == 1) {
@@ -54,25 +42,19 @@ board_t board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]) {
   }
 }
 
-
 void cell_print(board_t *b, int line, int row, int slice) {
   cell_t c = b->tiles[GRIDWIDTH * line + row];
   int size = c.top + 1;
-  // top, down, left and right border characters
-  char t;
-  char d;
-  char l;
-  char r;
-  if (c.trapped) {
+  char t = '-';
+  char d = '-';
+  char l = '|';
+  char r = '|';
+
+  if (c.trapped == 1) {
     t = 'v';
     d = '^';
     l = '>';
     r = '<';
-  } else {
-    t = '-';
-    d = '-';
-    l = '|';
-    r = '|';
   }
   switch (slice) {
   case 0:
@@ -130,8 +112,7 @@ void board_print(
     board_t *b,
     int highlited_line) { // if highlited_line is -1 then nothing is selected
                           /*This function takes a maximum of 26 rows*/
-  printf("      ");
-  printf("START\n\n");
+  printf("\n");
   for (int line = 0; line <= GRIDHEIGHT; line++) {
     if (line == 0) {
       printf("      ");
@@ -143,6 +124,7 @@ void board_print(
       for (int row = 0; row < GRIDWIDTH; row++) {
         printf("   %c   ", 'a' + row);
       }
+      printf("\n\n");
     } else {
       char h = ' ';
       if (line == highlited_line)
@@ -160,7 +142,7 @@ void board_print(
           break;
         }
         for (int row = 0; row < GRIDWIDTH; row++) {
-          cell_print(b, line, row, slice);
+          cell_print(b, line - 1, row, slice);
           printf("  ");
         }
         printf("\n");
