@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+// #include "board.h"
 
 const int player_count = 4;
 
@@ -14,7 +15,12 @@ int de() {
 int main(void) {
     srand(time(NULL));
 
-    // board_t* b = let's figure this out later
+    int trapped_tiles[GRID_HEIGHT][GRID_WIDTH] = {
+        { 0, 1, 0 },
+        { 0, 0, 0 },
+        { 0, 0, 0 }
+    }
+    board_t* b = board_make(trapped_tiles);
 
     bool game_over = false;
     while(!game_over) {
@@ -27,13 +33,13 @@ int main(void) {
             printf("On lance le dé... vous avez obtenu un %d !\n", rolled_value);
 
             printf("Souhaitez-vous déplacer un hérisson ? (O/N) ");
-            
+
             char move_hedgehog;
             scanf(" %c", &move_hedgehog);
 
             if(move_hedgehog == 'O') {
-                printf("Entrez le hérisson à déplacer : \n");
-    
+                printf("Indiquez le hérisson à déplacer : ");
+
                 char row = 'z';
                 int line = 42;
                 scanf(" %c%i", &row, &line);
@@ -46,7 +52,11 @@ int main(void) {
 
                 if(player_owning_cell != player_name) printf("Ce hérisson n'appartient pas à votre équipe.\n");
                 else {
-                    
+                    printf("Indiquez la direction du déplacement (T/B): ");
+                    char direction = 'N';
+                    scanf(" %c", &direction);
+
+                    if(direction == 'T')
                 }
             }
 

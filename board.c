@@ -1,11 +1,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stdio.h>
-
-#define GRIDHEIGHT 3
-#define GRIDWIDTH 3
-#define PLAYERCOUNT 2
-#define HEDGEHOGS 2
+#include "board.h"
 
 struct cell {
   char stack[PLAYERCOUNT * HEDGEHOGS]; // Uppercase letters
@@ -174,4 +170,3 @@ void board_print(
     }
   }
 }
-

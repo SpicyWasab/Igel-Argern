@@ -1,0 +1,33 @@
+#ifndef BOARD_H
+#define BOARD_H
+
+#define GRIDHEIGHT 3
+#define GRIDWIDTH 3
+#define PLAYERCOUNT 2
+#define HEDGEHOGS 2
+
+struct cell;
+typedef struct cell cell_t;
+
+struct board;
+typedef struct board board_t;
+
+void board_push(board_t *b, int line, int row, char ctn);
+
+char board_pop(board_t *b, int line, int row);
+
+int board_height(board_t *b, int line, int row);
+
+char board_top(board_t *b, int line, int row);
+
+char board_peek(board_t *b, int line, int row, int pos);
+
+board_t *board_make(int **trapped);
+
+
+void cell_print(board_t *b, int line, int row, int slice);
+
+void board_print(
+    board_t *b,
+    int highlited_line);
+#endif
