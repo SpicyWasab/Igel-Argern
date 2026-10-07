@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
-// #include "board.h"
+#include "board.h"
 
 const int player_count = 4;
 
@@ -15,11 +15,12 @@ int de() {
 int main(void) {
     srand(time(NULL));
 
-    int trapped_tiles[GRID_HEIGHT][GRID_WIDTH] = {
+    int trapped_tiles[GRIDHEIGHT][GRIDWIDTH] = {
         { 0, 1, 0 },
         { 0, 0, 0 },
         { 0, 0, 0 }
-    }
+    };
+
     board_t* b = board_make(trapped_tiles);
 
     bool game_over = false;

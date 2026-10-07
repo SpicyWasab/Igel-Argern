@@ -41,7 +41,7 @@ char board_peek(board_t *b, int line, int row, int pos) { // pos = 0 => top
   return b->tiles[GRIDWIDTH * line + row].stack[index];
 }
 
-board_t *board_make(int **trapped) {
+board_t *board_make(int trapped[GRIDHEIGHT][GRIDWIDTH]) {
   board_t *b;
   for (int line = 0; line < GRIDHEIGHT; line++) {
     for (int row = 0; row < GRIDWIDTH; row++) {
