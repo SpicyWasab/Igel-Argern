@@ -9,6 +9,8 @@ int de() {
     return rand() % 6 + 1;
 }
 
+// TODO : move input logic to dedicated functions in order to avoid some obvious bugs
+
 int main(void) {
     srand(time(NULL));
 
@@ -32,15 +34,18 @@ int main(void) {
             if(move_hedgehog == 'O') {
                 printf("Entrez le hérisson à déplacer : \n");
     
-                char column = 'z';
-                int row = 42;
-                scanf(" %c%i", &column, &row);
-                column -= 97;
-                row--;
+                char row = 'z';
+                int line = 42;
+                scanf(" %c%i", &row, &line);
+                row -= 97;
+                line--;
 
-                printf("On a sélectionné la colonne %d et la ligne %d \n", column, row);
+                // printf("On a sélectionné la row %d et la line %d \n", row, line);
 
-                // char player_owning_cell = board_peek(b)
+                char player_owning_cell = board_top(b, line, row);
+
+                if(player_owning_cell != player_name) printf("Ce hérisson n'appartient pas à votre équipe.\n");
+
             }
 
 
