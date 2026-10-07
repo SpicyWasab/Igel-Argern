@@ -41,15 +41,15 @@ char board_peek(board_t *b, int line, int row, int pos) { // pos = 0 => top
   return b->tiles[GRIDWIDTH * line + row].stack[index];
 }
 
-board_t board_init(board_t b, int trapped[GRIDHEIGHT][GRIDWIDTH]) {
+board_t board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]) {
   for (int line = 0; line < GRIDHEIGHT; line++) {
     for (int row = 0; row < GRIDWIDTH; row++) {
       if (trapped[line][row] == 1) {
-        b.tiles[GRIDWIDTH * line + row].trapped = true;
+        b->tiles[GRIDWIDTH * line + row].trapped = true;
       } else {
-        b.tiles[GRIDWIDTH * line + row].trapped = false;
+        b->tiles[GRIDWIDTH * line + row].trapped = false;
       }
-      b.tiles[GRIDWIDTH * line + row].top = -1;
+      b->tiles[GRIDWIDTH * line + row].top = -1;
     }
   }
 }
