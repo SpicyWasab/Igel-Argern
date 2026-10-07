@@ -4,7 +4,7 @@ dev:
 	gcc $(CFLAGS) -g -o igel-argern ./main.c
 
 prod:
-	gcc $(CFLAGS) igel-argern ./main.c
+	gcc $(CFLAGS) -o igel-argern ./main.c
 
 clean:
 	rm ./igel-argern
