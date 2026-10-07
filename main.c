@@ -45,8 +45,12 @@ int main(void) {
                 char player_owning_cell = board_top(b, line, row);
 
                 if(player_owning_cell != player_name) printf("Ce hérisson n'appartient pas à votre équipe.\n");
-
+                else {
+                    
+                }
             }
+
+
 
 
 

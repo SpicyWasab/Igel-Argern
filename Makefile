@@ -1,10 +1,10 @@
 CFLAGS = -Wall -Wextra -Werror
 
 dev:
-	gcc $(CFLAGS) -g -o igel-argern ./main.c
+	gcc $(CFLAGS) -g -o igel-argern ./main.c ./board.c
 
 prod:
-	gcc $(CFLAGS) -o igel-argern ./main.c
+	gcc $(CFLAGS) -o igel-argern ./main.c ./board.c
 
 clean:
 	rm ./igel-argern
