@@ -22,6 +22,14 @@ bool board_check_trapped(board_t *b, int line, int row) {
     return b->tiles[GRIDWIDTH * line + row].trapped;
 }
 
+bool board_add_won_hedgehog(board_t *b, int player) {
+    b->won_hedgehogs[player]++;
+}
+
+bool board_get_won_hedgehogs(board_t *b, int player) {
+    return b->won_hedgehogs[player];
+}
+
 // TODO : move input logic to dedicated functions in order to avoid some obvious bugs
 
 int main(void) {
@@ -119,14 +127,25 @@ int main(void) {
                 }
 
                 char hedgehog = board_pop(&b, rolled_line, row);
+                int hedgehog_team = hedgehog - 'A';
                 board_push(&b, rolled_line, row + 1, hedgehog);
+
+                // one hedgehog crossed the finish line !
+                if(row + 1 == GRIDWIDTH) {
+                    board_add_won_hedgehog(&b, hedgehog_team);
+                    // using >= so that it ends the game even if there's only one hedgehog per player
+                    if(board_get_won_hedgehogs(&b, hedgehog_team) >= HEDGEHOGS / PLAYERCOUNT - 1) game_over = true;
+                }
             }
+        }
+    }
 
-
-
-
-
-
+    // the game is over, apparently
+    printf("=== FIN DU JEU ===\n");
+    int place = 1;
+    for(int hedgehog_count = HEDGEHOGS / PLAYERCOUNT ; i >= 0 ; i++) {
+        for(int player = 0 ; player < PLAYERCOUNT ; player++) {
+            // if(board_get_won_hedgehogs(&b, player) == hedgehog_count)
         }
     }
 

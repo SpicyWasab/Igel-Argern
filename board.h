@@ -17,6 +17,7 @@ typedef struct cell cell_t;
 
 struct board {
   cell_t tiles[GRIDHEIGHT * GRIDWIDTH];
+  int[PLAYERCOUNT] won_hedgehogs;
 };
 typedef struct board board_t;
 
