@@ -47,7 +47,7 @@ int main(void) {
     printf("hey !\n");
 
     // placing hedgehogs, because the game is a bit boring when there aren't any hedgehogs yet
-    for(int i = 0 ; i < HEDGEHOGS ; i++) {
+    for(int i = 0 ; i < HEDGEHOGSPERPLAYER ; i++) {
         board_push(&b, roll_dice() % GRIDHEIGHT, 0, i % PLAYERCOUNT + 'A');
     }
     printf("hey !\n");
@@ -134,7 +134,7 @@ int main(void) {
                 if(row + 1 == GRIDWIDTH) {
                     board_add_won_hedgehog(&b, hedgehog_team);
                     // using >= so that it ends the game even if there's only one hedgehog per player
-                    if(board_get_won_hedgehogs(&b, hedgehog_team) >= HEDGEHOGS / PLAYERCOUNT - 1) game_over = true;
+                    if(board_get_won_hedgehogs(&b, hedgehog_team) >= HEDGEHOGSPERPLAYER - 1) game_over = true;
                 }
             }
         }
@@ -143,7 +143,7 @@ int main(void) {
     // the game is over, apparently
     printf("=== FIN DU JEU ===\n");
     int place = 1;
-    for(int hedgehog_count = HEDGEHOGS / PLAYERCOUNT ; i >= 0 ; i++) {
+    for(int hedgehog_count = HEDGEHOGSPERPLAYER ; hedgehog_count >= 0 ; hedgehog_count--) {
         for(int player = 0 ; player < PLAYERCOUNT ; player++) {
             // if(board_get_won_hedgehogs(&b, player) == hedgehog_count)
         }
