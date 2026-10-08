@@ -6,10 +6,10 @@
 #define GRIDHEIGHT 3
 #define GRIDWIDTH 3
 #define PLAYERCOUNT 2
-#define HEDGEHOGS 2
+#define HEDGEHOGSPERPLAYER 2
 
 struct cell {
-  char stack[PLAYERCOUNT * HEDGEHOGS]; // Uppercase letters
+  char stack[PLAYERCOUNT * HEDGEHOGSPERPLAYER]; // Uppercase letters
   int top; // index of the first hedgehog; -1 if the tile is empty
   bool trapped;
 };
@@ -17,7 +17,7 @@ typedef struct cell cell_t;
 
 struct board {
   cell_t tiles[GRIDHEIGHT * GRIDWIDTH];
-  int[PLAYERCOUNT] won_hedgehogs;
+  int won_hedgehogs[PLAYERCOUNT];
 };
 typedef struct board board_t;
 
