@@ -99,7 +99,7 @@ void cell_print(board_t *b, int line, int row, int slice) {
     }
     break;
   default:
-    if (size == 0) {
+    if (size <= 1) {
       printf(" %c%c%c ", d, d, d);
     } else {
       printf(" %c%d%c ", d, size, d);
