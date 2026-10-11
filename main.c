@@ -63,13 +63,13 @@ int main(void) {
     while(!game_over) {
         for(int player = 0 ; player < PLAYERCOUNT ; player++) {
             int player_name = player + 65; // 65 is the ascii code for 'A'
-            printf("Au tour du joueur %d ! \n", player_name);
+            printf("Au tour du joueur %c ! \n", player_name);
 
-            board_print(&b, -1);
+            int rolled_line = (roll_dice() - 1) % (GRIDHEIGHT);
 
-            int rolled_line = roll_dice();
+            printf("On lance le dé... vous avez obtenu un %d !\n", rolled_line + 1);
 
-            printf("On lance le dé... vous avez obtenu un %d !\n", rolled_line);
+            board_print(&b, rolled_line + 1);
 
             printf("Souhaitez-vous déplacer un hérisson ? (O/N) ");
 
@@ -95,7 +95,7 @@ int main(void) {
                     char direction = 'N';
                     scanf(" %c", &direction);
 
-                    if(direction == 'T') {
+                    if(direction == 'H') {
                         if(line == 0) printf("Vous ne pouvez pas vous déplacer vers le haut.\n");
                         else {
                             char hedgehog = board_pop(&b, line, row); // technically, it's useless to store it since we know it's the player's one, but anyways
@@ -109,12 +109,14 @@ int main(void) {
                             board_push(&b, line + 1, row, hedgehog);
                         }
                     }
+
+                    board_print(&b, rolled_line + 1);
                 }
             }
 
             if(board_is_line_empty(&b, rolled_line, GRIDWIDTH - 1)) printf("La ligne %d n'a aucun hérisson déplaçable ; pas d'autre action à réaliser. \n", rolled_line);
             else {
-                printf("Indiquez la colonne du hérisson à déplacer sur la ligne %d : ", rolled_line);
+                printf("Indiquez la colonne du hérisson à déplacer sur la ligne %d : ", rolled_line + 1);
 
                 char row = 'z';
                 scanf(" %c", &row);
@@ -144,9 +146,15 @@ int main(void) {
     printf("=== FIN DU JEU ===\n");
     int place = 1;
     for(int hedgehog_count = HEDGEHOGSPERPLAYER ; hedgehog_count >= 0 ; hedgehog_count--) {
+        printf("Place #1 : ");
         for(int player = 0 ; player < PLAYERCOUNT ; player++) {
-            // if(board_get_won_hedgehogs(&b, player) == hedgehog_count)
+            if(board_get_won_hedgehogs(&b, player) == hedgehog_count) {
+                printf("équipe %c,", player + 'A');
+                place++;
+            }
         }
-    }
+        printf(" avec %d hérissons\n", hedgehog_count);
 
+        if(place == PLAYERCOUNT) break;
+    }
 }

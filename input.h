@@ -1,5 +1,12 @@
-bool move_or_not();
+bool input_move_or_not();
 
-char *move();
+void input_move(char result[3]);
 
-char *column();
+char input_column();
+
+/*
+
+
+
+
+ */
