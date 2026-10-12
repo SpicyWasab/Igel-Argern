@@ -5,7 +5,7 @@
 
 #define GRIDHEIGHT 3
 #define GRIDWIDTH 3
-#define PLAYERCOUNT 2
+#define PLAYERCOUNT 4
 #define HEDGEHOGSPERPLAYER 2
 
 struct cell {
@@ -40,6 +40,10 @@ void board_add_won_hedgehog(board_t *b, int player);
 bool board_get_won_hedgehogs(board_t *b, int player);
 
 void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]);
+
+bool board_sandwichable(board_t *b, int line, int row);
+
+void board_sandwich(board_t *b, int line, int row, int line_dest, int row_dest);
 
 void cell_print(board_t *b, int line, int row, int slice);
 

@@ -63,6 +63,39 @@ void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]) {
   }
 }
 
+/*checks the presence of two pieces alike with one on top, but does not check if
+ * the coordinates are exact*/
+bool board_sandwichable(board_t *b, int line, int row) {
+  cell_t c = b->tiles[GRIDWIDTH * line + row];
+  int index_base = c.top - 1;
+  while (c.stack[index_base] != board_top(b, line, row) && index_base >= 0) {
+    index_base--;
+  }
+  return (index_base >= 0);
+}
+
+/*This function supposes sandwiching is possible :  must check first.
+It also does not verify if the movement is in range. Uses line indexing starting
+at 0*/
+void board_sandwich(board_t *b, int line, int row, int line_dest,
+                    int row_dest) {
+  assert(board_sandwichable(b, line, row));
+  cell_t c = b->tiles[GRIDWIDTH * line + row];
+  cell_t c_dest = b->tiles[GRIDWIDTH * line_dest + row_dest];
+  int index_base = c.top - 1;
+  while (c.stack[index_base] != board_top(b, line, row) && index_base >= 0) {
+    index_base--;
+  }
+  assert(index_base >= 0);
+  for (int i = 0; i <= c.top - index_base; i++) {
+    b->tiles[GRIDWIDTH * line_dest + row_dest].stack[i + c_dest.top + 1] =
+        b->tiles[GRIDWIDTH * line + row].stack[i + index_base];
+  }
+  b->tiles[GRIDWIDTH * line_dest + row_dest].top += c.top - index_base + 1;
+
+  b->tiles[GRIDWIDTH * line + row].top = index_base - 1;
+}
+
 void cell_print(board_t *b, int line, int row, int slice) {
   cell_t c = b->tiles[GRIDWIDTH * line + row];
   int size = c.top + 1;
@@ -129,13 +162,18 @@ void cell_print(board_t *b, int line, int row, int slice) {
   }
 }
 
-void board_print(
-    board_t *b,
-    int highlited_line) { // if highlited_line is -1 then nothing is selected
-                          /*This function takes a maximum of 26 rows*/
+/*
+if highlited_line is -1 then nothing is selected
+This function takes a maximum of 26 rows*/
+void board_print(board_t *b, int highlited_line) {
   printf("\n");
   for (int line = 0; line <= GRIDHEIGHT; line++) {
     if (line == 0) {
+      printf("      START  ");
+      for (int row = 1; row < GRIDWIDTH - 1; row++) {
+        printf("       ");
+      }
+      printf("FINISH\n\n");
       printf("      ");
       for (int row = 0; row < GRIDWIDTH; row++) {
         printf(" row   ");
@@ -143,7 +181,7 @@ void board_print(
       printf("\n");
       printf("      ");
       for (int row = 0; row < GRIDWIDTH; row++) {
-        printf("   %c   ", 'a' + row);
+        printf("  %c    ", 'a' + row);
       }
       printf("\n\n");
     } else {
@@ -170,4 +208,14 @@ void board_print(
       }
     }
   }
+  printf("      ");
+  for (int row = 0; row < GRIDWIDTH; row++) {
+    printf(" row   ");
+  }
+  printf("\n");
+  printf("      ");
+  for (int row = 0; row < GRIDWIDTH; row++) {
+    printf("  %c    ", 'a' + row);
+  }
+  printf("\n");
 }

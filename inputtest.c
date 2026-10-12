@@ -4,9 +4,9 @@
 #include "input.h"
 
 int main(void) {
-    bool decision1 = input_move_or_not();
-    bool decision2 = input_move_or_not();
-    bool decision3 = input_move_or_not();
+    bool decision1 = input_YN();
+    bool decision2 = input_YN();
+    bool decision3 = input_YN();
 
     printf("D1 : %d, D2 : %d, D3 : %d\n", decision1, decision2, decision3);
 

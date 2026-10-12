@@ -26,7 +26,7 @@ bool safe_input(char* str, int size) {
 }
 
 // ask the user if he wants to move a hedgehog
-bool input_move_or_not() {
+bool input_YN() {
   printf("Would you like to move a hedgehog? (Y/n) ");
 
   char move_hedgehog[3]; // size 3 to account for both \n and \0
@@ -54,8 +54,7 @@ bool input_move_or_not() {
 // asks the user for a valid move and writes it
 void input_move(char result[3]) {
   // Format RowLineDirection (CAPS) - example : A1T, D3B
-  printf("What is your move? Format: ROWlineDIRECTION (Direction: T top, B "
-         "bottom) (A1B, B2T...)");
+  printf("What is your move? Ex : A1B, B3T... (Square+Top/Bottom)");
 
   char move[5]; // this will hold the input
 

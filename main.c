@@ -45,7 +45,7 @@ int main(void) {
       }
       bool move_hedgehog = false;
       if (can_move) {
-        move_hedgehog = input_move_or_not();
+        move_hedgehog = input_YN();
       } else {
         printf("You have no hedgehog to move up or down.\n");
       }
@@ -102,33 +102,6 @@ int main(void) {
           board_pop(&b, line, row);
           board_push(&b, line + 1, row, player_name);
         }
-
-        // printf("On a sélectionné la row %d et la line %d \n", row, line);
-
-        /*char player_owning_cell = board_top(&b, line, row);
-
-        if(player_owning_cell != player_name) printf("Ce hérisson n'appartient
-    pas à votre équipe.\n"); else { printf("Indiquez la direction du
-    déplacement (H/B): "); char direction = 'N'; scanf(" %c", &direction);
-
-            if(direction == 'H') {
-                if(line == 0) printf("Vous ne pouvez pas vous déplacer vers le
-    haut.\n"); else { char hedgehog = board_pop(&b, line, row); //
-    technically, it's useless to store it since we know it's the player's one,
-    but anyways board_push(&b, line - 1, row, hedgehog);
-                }
-            }
-            else if(direction == 'B') {
-                if(line == GRIDHEIGHT) printf("Vous ne pouvez pas vous
-    déplacer vers le bas.\n"); else { char hedgehog = board_pop(&b, line,
-    row); // technically, it's useless to store it since we know it's the
-    player's one, but anyways board_push(&b, line + 1, row, hedgehog);
-                }
-            }
-
-            board_print(&b, rolled_line + 1);
-        }
-    }*/
         board_print(&b, rolled_line + 1);
       }
 
@@ -164,14 +137,6 @@ int main(void) {
             col = input_column() - 'A';
           }
         }
-
-        /*if(board_height(&b, rolled_line, row) == 0) printf("Cette case est
-        vide !\n"); else if(row == GRIDWIDTH - 1) printf("Ce hérisson ne
-        peut plus avancer !\n"); else if(board_check_trapped(&b,
-        rolled_line, row) && !board_is_line_empty(&b, rolled_line, row)) {
-            printf("Impossible de déplacer le hérisson : il est piégé et il
-        reste d'autres hérissons avant lui.");
-        }*/
 
         char hedgehog = board_pop(&b, rolled_line, col);
         int hedgehog_team = hedgehog - 'A';
