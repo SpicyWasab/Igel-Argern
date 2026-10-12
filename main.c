@@ -134,10 +134,12 @@ int main(void) {
 
       if (board_is_line_empty(&b, rolled_line, GRIDWIDTH)) {
         printf("Line %d has no more movable hedgehog; no more actions needed\n",
-               rolled_line);
+               rolled_line + 1);
       } else {
 
         int col = input_column() - 'A';
+
+        printf("DEBUG : player picked col %d\n", col);
 
         bool move_ok = false;
 

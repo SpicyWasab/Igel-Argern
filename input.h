@@ -1,4 +1,4 @@
-#ifndef INPIT_H
+#ifndef INPUT_H
 #define INPUT_H
 
 void flush_stdin();
