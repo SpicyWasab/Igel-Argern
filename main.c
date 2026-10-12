@@ -139,7 +139,6 @@ int main(void) {
 
         int col = input_column() - 'A';
 
-        printf("DEBUG : player picked col %d\n", col);
 
         bool move_ok = false;
 
@@ -162,8 +161,7 @@ int main(void) {
           if (passed) {
             move_ok = true;
           } else {
-            char col = input_column();
-            col -= 'A';
+            col = input_column() - 'A';
           }
         }
 
