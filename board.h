@@ -31,12 +31,17 @@ char board_top(board_t *b, int line, int row);
 
 char board_peek(board_t *b, int line, int row, int pos);
 
-void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]);
+bool board_is_line_empty(board_t *b, int line, int max_row);
 
+bool board_check_trapped(board_t *b, int line, int row);
+
+void board_add_won_hedgehog(board_t *b, int player);
+
+bool board_get_won_hedgehogs(board_t *b, int player);
+
+void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]);
 
 void cell_print(board_t *b, int line, int row, int slice);
 
-void board_print(
-    board_t *b,
-    int highlited_line);
+void board_print(board_t *b, int highlited_line);
 #endif

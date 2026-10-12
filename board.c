@@ -29,6 +29,27 @@ char board_peek(board_t *b, int line, int row, int pos) { // pos = 0 => top
   return b->tiles[GRIDWIDTH * line + row].stack[index];
 }
 
+bool board_is_line_empty(board_t *b, int line, int max_row) {
+  for (int i = 0; i < max_row; i++) {
+    if (board_height(b, line, i) > 0)
+      return false;
+  }
+
+  return true;
+}
+
+bool board_check_trapped(board_t *b, int line, int row) {
+  return b->tiles[GRIDWIDTH * line + row].trapped;
+}
+
+void board_add_won_hedgehog(board_t *b, int player) {
+  b->won_hedgehogs[player]++;
+}
+
+bool board_get_won_hedgehogs(board_t *b, int player) {
+  return b->won_hedgehogs[player];
+}
+
 void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]) {
   for (int line = 0; line < GRIDHEIGHT; line++) {
     for (int row = 0; row < GRIDWIDTH; row++) {

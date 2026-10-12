@@ -5,7 +5,7 @@ column gives the column where to move the second hedgehog*/
 #include <stdbool.h>
 #include <stdio.h>
 
-bool flush_stdin() {
+void flush_stdin() {
     while(getchar() != '\n');
 }
 
@@ -21,6 +21,7 @@ bool safe_input(char* str, int size) {
         return false;
     } else { // if fgets failed
         flush_stdin();
+        return false;
     }
 }
 
