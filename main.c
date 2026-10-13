@@ -30,7 +30,7 @@ int main(void) {
 
   while (!game_over) {
     for (int player = 0; player < PLAYERCOUNT; player++) {
-      int player_name = player + 65; // 65 is the ascii code for 'A'
+      int player_name = player + 'A';
       printf("Au tour du joueur %c ! \n", player_name);
 
       int rolled_line = (roll_dice() - 1) % (GRIDHEIGHT);
