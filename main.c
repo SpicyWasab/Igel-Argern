@@ -9,7 +9,37 @@
 
 int roll_dice() { return rand() % 6 + 1; }
 
-int main(void) {
+int main(int argc, char* argv[]) {
+  // let's define some variables for extensions
+  // since we only implement 2 simple extensions, there is no need to put this in another struct / file yet
+  // EXTENSION 1 : doping
+  bool ext_hedgehog_on_drugs = false;
+  bool ext_doped_hedgehog_finished = false;
+
+  // EXTENSION 2 : sandwiches
+  bool ext_sandwiches = false;
+
+  // let's see if the user enabled some extensions...
+  if(argc == 2) {
+    printf("Enabling extensions...\n");
+    // let's see the codes of enabled extensions
+    for(int i = 0 ; argv[1][i] != '\0' ; i++) {
+      switch(argv[1][i]) {
+        case 'd':
+          if(!ext_hedgehog_on_drugs) printf("<Doping hedgehog> enabled\n");
+          ext_hedgehog_on_drugs = true;
+          break;
+        case 's':
+          if(!ext_sandwiches) printf("<Sandwiches> enabled\n");
+          ext_sandwiches = true;
+          break;
+        default:
+          printf("WARNING : unrecognized extension code %c\n", argv[1][i]);
+          break;
+      }
+    }
+  }
+
   srand(time(NULL));
 
   int trapped_tiles[GRIDHEIGHT][GRIDWIDTH] = {{0, 0, 1}, {0, 0, 0}, {0, 0, 0}};
@@ -146,7 +176,6 @@ int main(void) {
 
         // one hedgehog crossed the finish line !
         if (col + 1 == GRIDWIDTH - 1) {
-            printf("DEBUG : CROSSED FINISH LINE\n");
           board_add_won_hedgehog(&b, hedgehog_team);
           // using >= so that it ends the game even if there's only one
           // hedgehog per player
