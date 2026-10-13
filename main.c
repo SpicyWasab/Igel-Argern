@@ -174,14 +174,20 @@ int main(int argc, char* argv[]) {
         int hedgehog_team = hedgehog - 'A';
         board_push(&b, rolled_line, col + 1, hedgehog);
 
-        // one hedgehog crossed the finish line !
         if (col + 1 == GRIDWIDTH - 1) {
-          board_add_won_hedgehog(&b, hedgehog_team);
-          // using >= so that it ends the game even if there's only one
-          // hedgehog per player
-          if (board_get_won_hedgehogs(&b, hedgehog_team) >=
-              HEDGEHOGSPERPLAYER - 1) {
-            game_over = true;
+          // one hedgehog crossed the finish line ! however, we don't care if it's the doped one...
+          if(ext_hedgehog_on_drugs && !ext_doped_hedgehog_finished) {
+            printf("This hedgehog crossed the finish line ! However, its performance was so good it was accused of doping. Too bad !\n");
+            ext_doped_hedgehog_finished = true;
+          }
+          else {
+            board_add_won_hedgehog(&b, hedgehog_team);
+            // using >= so that it ends the game even if there's only one
+            // hedgehog per player
+            if (board_get_won_hedgehogs(&b, hedgehog_team) >=
+                HEDGEHOGSPERPLAYER - 1) {
+              game_over = true;
+            }
           }
         }
       }
