@@ -20,8 +20,10 @@ int main(void) {
 
   // placing hedgehogs, because the game is a bit boring when there aren't any
   // hedgehogs yet
-  for (int i = 0; i < HEDGEHOGSPERPLAYER; i++) {
-    board_push(&b, roll_dice() % GRIDHEIGHT, 0, i % PLAYERCOUNT + 'A');
+  for(int player = 0 ; player < PLAYERCOUNT ; player++) {
+    for (int i = 0; i < HEDGEHOGSPERPLAYER; i++) {
+        board_push(&b, roll_dice() % GRIDHEIGHT, 0, player + 'A');
+    }
   }
 
   bool game_over = false;
@@ -144,6 +146,7 @@ int main(void) {
 
         // one hedgehog crossed the finish line !
         if (col + 1 == GRIDWIDTH - 1) {
+            printf("DEBUG : CROSSED FINISH LINE\n");
           board_add_won_hedgehog(&b, hedgehog_team);
           // using >= so that it ends the game even if there's only one
           // hedgehog per player
@@ -159,19 +162,27 @@ int main(void) {
   // the game is over, apparently
   printf("=== GAME OVER ===\n");
   int place = 1;
-  for (int hedgehog_count = HEDGEHOGSPERPLAYER; hedgehog_count >= 0;
+  // let's print the leaderboard
+  for (int hedgehog_count = HEDGEHOGSPERPLAYER; hedgehog_count >= 0 && place <= PLAYERCOUNT;
        hedgehog_count--) {
-    printf("Place #%d : ",place);
-    for (int player = 0; player < PLAYERCOUNT; player++) {
-      if (board_get_won_hedgehogs(&b, player) == hedgehog_count) {
-        printf("équipe %c,", player + 'A');
-        place++;
-      }
+    // let's find out if a team actually won with that many hedgehogs
+    bool valid_count = false;
+    for(int player = 0 ; player < PLAYERCOUNT ; player++) {
+        if(board_get_won_hedgehogs(&b, player) == hedgehog_count) valid_count = true;
     }
-    printf(" avec %d hérissons\n", hedgehog_count);
 
-    if (place == PLAYERCOUNT)
-      break;
+    // we should only print this line of the leaderboard if at least someone won with that many hedgehogs
+    if(valid_count) {
+        printf("Place #%d : ", place);
+        for (int player = 0; player < PLAYERCOUNT; player++) {
+          if (board_get_won_hedgehogs(&b, player) == hedgehog_count) {
+            printf("équipe %c, ", player + 'A');
+            place++;
+          }
+        }
+        printf("avec %d hérissons\n", hedgehog_count);
+    }
   }
+
   return 0;
 }

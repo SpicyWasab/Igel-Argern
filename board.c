@@ -61,6 +61,10 @@ void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]) {
       b->tiles[GRIDWIDTH * line + row].top = -1;
     }
   }
+
+  for(int player = 0 ; player < PLAYERCOUNT ; player++) {
+      b->won_hedgehogs[player] = 0;
+  }
 }
 
 /*checks the presence of two pieces alike with one on top, but does not check if
