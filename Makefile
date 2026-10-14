@@ -8,5 +8,3 @@ prod:
 
 clean:
 	rm ./igel-argern
-test:
-	gcc $(CFLAGS) -o igel-argern ./boardtest.c ./board.c
