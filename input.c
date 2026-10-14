@@ -6,23 +6,26 @@ column gives the column where to move the second hedgehog*/
 #include <stdio.h>
 
 void flush_stdin() {
-    while(getchar() != '\n');
+  while (getchar() != '\n')
+    ;
 }
 
 // reads from stdin and returns false if there's an issue, true otherwise
-bool safe_input(char* str, int size) {
-    if(fgets(str, size, stdin) != NULL) { // if there's no issue
-        for(int i = 0 ; i < size ; i++) { // try to find newline
-            if(str[i] == '\n') return true; // we found a newline, that's great, let's stop !
-        }
-
-        // if we get there, the input string was too long and didn't fit in str, so let's flush and return false
-        flush_stdin();
-        return false;
-    } else { // if fgets failed
-        flush_stdin();
-        return false;
+bool safe_input(char *str, int size) {
+  if (fgets(str, size, stdin) != NULL) { // if there's no issue
+    for (int i = 0; i < size; i++) {     // try to find newline
+      if (str[i] == '\n')
+        return true; // we found a newline, that's great, let's stop !
     }
+
+    // if we get there, the input string was too long and didn't fit in str, so
+    // let's flush and return false
+    flush_stdin();
+    return false;
+  } else { // if fgets failed
+    flush_stdin();
+    return false;
+  }
 }
 
 // ask the user if he wants to move a hedgehog
@@ -31,20 +34,21 @@ bool input_YN() {
   while (true) {
     bool input_successful = safe_input(move_hedgehog, 3);
 
-    if(input_successful) {
-        switch (move_hedgehog[0]) {
-            case 'Y':
-                return true;
-            case 'y':
-                return true;
-            case 'N':
-                return false;
-            case 'n':
-                return false;
-        }
+    if (input_successful) {
+      switch (move_hedgehog[0]) {
+      case 'Y':
+        return true;
+      case 'y':
+        return true;
+      case 'N':
+        return false;
+      case 'n':
+        return false;
+      }
     }
 
-    // if we didn't return anything, the input wasn't successful or didn't match our expectations
+    // if we didn't return anything, the input wasn't successful or didn't match
+    // our expectations
     printf("Please answer again (Y/n) ");
   }
 }
@@ -57,10 +61,11 @@ void input_move(char result[3]) {
   char move[5]; // this will hold the input
 
   while (true) {
-      bool input_successful = safe_input(move, 5);
+    bool input_successful = safe_input(move, 5);
 
     if (input_successful) {
-      if (move[0] >= 'A' && move[0] <= 'Z') { // if first char is in the alphabet
+      if (move[0] >= 'A' &&
+          move[0] <= 'Z') { // if first char is in the alphabet
         if (move[1] >= '0' && move[1] <= '9') { // if second char is a digit
           if (move[2] == 'T' || move[2] == 't' || move[2] == 'B' ||
               move[2] == 'b') { // if third char is a move

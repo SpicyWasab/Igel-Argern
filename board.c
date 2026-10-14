@@ -55,33 +55,36 @@ void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]) {
     for (int row = 0; row < GRIDWIDTH; row++) {
       b->tiles[GRIDWIDTH * line + row].top = -1;
       b->tiles[GRIDWIDTH * line + row].trapped = trapped[line][row] == 1;
-      for(int i=0; i< PLAYERCOUNT*HEDGEHOGSPERPLAYER;i++){
-        b->tiles[GRIDWIDTH * line + row].stack[i]='A';
+      for (int i = 0; i < PLAYERCOUNT * HEDGEHOGSPERPLAYER; i++) {
+        b->tiles[GRIDWIDTH * line + row].stack[i] = 'A';
       }
-
     }
   }
 
-  for(int player = 0 ; player < PLAYERCOUNT ; player++) {
-      b->won_hedgehogs[player] = 0;
+  for (int player = 0; player < PLAYERCOUNT; player++) {
+    b->won_hedgehogs[player] = 0;
   }
 }
 
-/*checks the presence of two pieces alike with one on top, and returns the size of the sandwich (including both top and bottom pieces). returns 0 in case there isn't any sandwich */
+/*checks the presence of two pieces alike with one on top, and returns the size
+ * of the sandwich (including both top and bottom pieces). returns 0 in case
+ * there isn't any sandwich */
 int board_sandwich_size(board_t *b, int line, int row) {
   cell_t c = b->tiles[GRIDWIDTH * line + row];
 
   // we go down the pile to find the first similar piece
-  for(int index_base = c.top - 1 ; index_base >= 0 ; index_base--) {
-    if(board_top(b, line, row) == c.stack[index_base]) return c.top - index_base + 1; // making a simple drawing helps to figure out why we increment the value
+  for (int index_base = c.top - 1; index_base >= 0; index_base--) {
+    if (board_top(b, line, row) == c.stack[index_base])
+      return c.top - index_base + 1; // making a simple drawing helps to figure
+                                     // out why we increment the value
   }
 
   // if there wasn't any, there's no sandwich
   return 0;
 }
 
-// "a drawing", to understand better the indexes in both the above and below function
-// 5 <- top
+// "a drawing", to understand better the indexes in both the above and below
+// function 5 <- top
 // 4
 // 3
 // 2 <- base
@@ -103,7 +106,10 @@ void board_sandwich(board_t *b, int line, int row, int line_dest,
   // move the sandwich
   for (int i = 0; i < sandwich_size; i++) {
     b->tiles[GRIDWIDTH * line_dest + row_dest].stack[c_dest.top + 1 + i] =
-        b->tiles[GRIDWIDTH * line + row].stack[c.top - sandwich_size + 1 + i]; // a drawing might help to understand the index here as well
+        b->tiles[GRIDWIDTH * line + row]
+            .stack[c.top - sandwich_size + 1 +
+                   i]; // a drawing might help to understand the index here as
+                       // well
   }
 
   // update both top index
