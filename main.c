@@ -73,8 +73,10 @@ int main(int argc, char *argv[]) {
       bool can_move = false;
       for (int row = 0; row < GRIDWIDTH; row++) {
         for (int line = 0; line < GRIDHEIGHT; line++) {
-          if (board_top(&b, line, row) == player_name)
-            can_move = true;
+          if (board_height(&b, line, row) >= 1) {
+            if (board_top(&b, line, row) == player_name)
+              can_move = true;
+          }
         }
       }
       bool move_hedgehog = false;
