@@ -41,7 +41,7 @@ bool board_get_won_hedgehogs(board_t *b, int player);
 
 void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]);
 
-bool board_sandwichable(board_t *b, int line, int row);
+int board_sandwich_size(board_t *b, int line, int row);
 
 void board_sandwich(board_t *b, int line, int row, int line_dest, int row_dest);
 

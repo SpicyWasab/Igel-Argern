@@ -67,37 +67,48 @@ void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]) {
   }
 }
 
-/*checks the presence of two pieces alike with one on top, but does not check if
- * the coordinates are exact*/
-bool board_sandwichable(board_t *b, int line, int row) {
+/*checks the presence of two pieces alike with one on top, and returns the size of the sandwich (including both top and bottom pieces). returns 0 in case there isn't any sandwich */
+int board_sandwich_size(board_t *b, int line, int row) {
   cell_t c = b->tiles[GRIDWIDTH * line + row];
-  int index_base = c.top - 1;
-  while (c.stack[index_base] != board_top(b, line, row) && index_base >= 0) {
-    index_base--;
+
+  // we go down the pile to find the first similar piece
+  for(int index_base = c.top - 1 ; index_base >= 0 ; index_base--) {
+    if(board_top(b, line, row) != c.stack[index_base]) return c.top - index_base + 1; // making a simple drawing helps to figure out why we increment the value
   }
-  return (index_base >= 0);
+
+  // if there wasn't any, there's no sandwich
+  return 0;
 }
+
+// "a drawing", to understand better the indexes in both the above and below function
+// 5 <- top
+// 4
+// 3
+// 2 <- base
+// 1
+// 0
 
 /*This function supposes sandwiching is possible :  must check first.
 It also does not verify if the movement is in range. Uses line indexing starting
 at 0*/
 void board_sandwich(board_t *b, int line, int row, int line_dest,
                     int row_dest) {
-  assert(board_sandwichable(b, line, row));
+  int sandwich_size = board_sandwich_size(b, line, row);
+  assert(sandwich_size != 0);
+
+  // getting both source and destination cell
   cell_t c = b->tiles[GRIDWIDTH * line + row];
   cell_t c_dest = b->tiles[GRIDWIDTH * line_dest + row_dest];
-  int index_base = c.top - 1;
-  while (c.stack[index_base] != board_top(b, line, row) && index_base >= 0) {
-    index_base--;
-  }
-  assert(index_base >= 0);
-  for (int i = 0; i <= c.top - index_base; i++) {
-    b->tiles[GRIDWIDTH * line_dest + row_dest].stack[i + c_dest.top + 1] =
-        b->tiles[GRIDWIDTH * line + row].stack[i + index_base];
-  }
-  b->tiles[GRIDWIDTH * line_dest + row_dest].top += c.top - index_base + 1;
 
-  b->tiles[GRIDWIDTH * line + row].top = index_base - 1;
+  // move the sandwich
+  for (int i = 0; i < sandwich_size; i++) {
+    b->tiles[GRIDWIDTH * line_dest + row_dest].stack[c_dest.top + 1 + i] =
+        b->tiles[GRIDWIDTH * line + row].stack[c_dest.top - sandwich_size + 1 + i]; // a drawing might help to understand the index here as well
+  }
+
+  // update both top index
+  b->tiles[GRIDWIDTH * line_dest + row_dest].top += sandwich_size;
+  b->tiles[GRIDWIDTH * line + row].top -= sandwich_size;
 }
 
 void cell_print(board_t *b, int line, int row, int slice) {
