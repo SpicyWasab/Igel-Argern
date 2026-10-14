@@ -293,11 +293,11 @@ int main(int argc, char *argv[]) {
       printf("Place #%d : ", place);
       for (int player = 0; player < PLAYERCOUNT; player++) {
         if (board_get_won_hedgehogs(&b, player) == hedgehog_count) {
-          printf("équipe %c, ", player + 'A');
+          printf("team %c, ", player + 'A');
           place++;
         }
       }
-      printf("avec %d hérissons\n", hedgehog_count);
+      printf("with %d hedgehogs\n", hedgehog_count);
     }
   }
 
