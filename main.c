@@ -154,7 +154,8 @@ int main(int argc, char* argv[]) {
         board_print(&b, rolled_line + 1);
       }
 
-      if (board_is_line_empty(&b, rolled_line, GRIDWIDTH)) {
+      // minus 1 because hedgehogs on the last row crossed the finishline and are not movable anymore
+      if (board_is_line_empty(&b, rolled_line, GRIDWIDTH - 1)) {
         printf("Line %d has no more movable hedgehog; no more actions needed\n",
                rolled_line + 1);
       } else {
@@ -201,6 +202,7 @@ int main(int argc, char* argv[]) {
             int start_i = 0; // this will make sense a few lines below
             if(ext_hedgehog_on_drugs && !ext_doped_hedgehog_finished) {
               printf("This hedgehog crossed the finish line ! However, its performance was so good it was accused of doping. Too bad !\n");
+              board_pop(&b, rolled_line, col + 1); // actually, the rules specify that it should be "taken out of the game"
               ext_doped_hedgehog_finished = true;
               start_i = 1; // about the for loop below, we skip the first hedgehog, since it's the doped one
             }
@@ -213,9 +215,10 @@ int main(int argc, char* argv[]) {
               board_add_won_hedgehog(&b, hedgehog_team);
               // using >= so that it ends the game even if there's only one
               // hedgehog per player
-              if (board_get_won_hedgehogs(&b, hedgehog_team) >=
+              if (!game_over && board_get_won_hedgehogs(&b, hedgehog_team) >=
                   HEDGEHOGSPERPLAYER - 1) {
                 game_over = true;
+                printf("A team successfully crossed the finish line ; this game will end at the end of this turn !\n");
               }
             }
           }
@@ -228,15 +231,17 @@ int main(int argc, char* argv[]) {
             // one hedgehog crossed the finish line ! however, we don't care if it's the doped one...
             if(ext_hedgehog_on_drugs && !ext_doped_hedgehog_finished) {
               printf("This hedgehog crossed the finish line ! However, its performance was so good it was accused of doping. Too bad !\n");
+              board_pop(&b, rolled_line, col + 1); // actually, the rules specify that it should be "taken out of the game"
               ext_doped_hedgehog_finished = true;
             }
             else {
               board_add_won_hedgehog(&b, hedgehog_team);
               // using >= so that it ends the game even if there's only one
               // hedgehog per player
-              if (board_get_won_hedgehogs(&b, hedgehog_team) >=
+              if (!game_over && board_get_won_hedgehogs(&b, hedgehog_team) >=
                   HEDGEHOGSPERPLAYER - 1) {
                 game_over = true;
+                printf("A team successfully crossed the finish line ; this game will end at the end of this turn !\n");
               }
             }
           }
