@@ -27,8 +27,6 @@ bool safe_input(char* str, int size) {
 
 // ask the user if he wants to move a hedgehog
 bool input_YN() {
-  printf("Would you like to move a hedgehog? (Y/n) ");
-
   char move_hedgehog[3]; // size 3 to account for both \n and \0
   while (true) {
     bool input_successful = safe_input(move_hedgehog, 3);
