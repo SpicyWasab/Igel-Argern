@@ -73,7 +73,7 @@ int board_sandwich_size(board_t *b, int line, int row) {
 
   // we go down the pile to find the first similar piece
   for(int index_base = c.top - 1 ; index_base >= 0 ; index_base--) {
-    if(board_top(b, line, row) != c.stack[index_base]) return c.top - index_base + 1; // making a simple drawing helps to figure out why we increment the value
+    if(board_top(b, line, row) == c.stack[index_base]) return c.top - index_base + 1; // making a simple drawing helps to figure out why we increment the value
   }
 
   // if there wasn't any, there's no sandwich
@@ -103,7 +103,7 @@ void board_sandwich(board_t *b, int line, int row, int line_dest,
   // move the sandwich
   for (int i = 0; i < sandwich_size; i++) {
     b->tiles[GRIDWIDTH * line_dest + row_dest].stack[c_dest.top + 1 + i] =
-        b->tiles[GRIDWIDTH * line + row].stack[c_dest.top - sandwich_size + 1 + i]; // a drawing might help to understand the index here as well
+        b->tiles[GRIDWIDTH * line + row].stack[c.top - sandwich_size + 1 + i]; // a drawing might help to understand the index here as well
   }
 
   // update both top index
