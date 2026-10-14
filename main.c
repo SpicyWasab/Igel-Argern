@@ -1,6 +1,5 @@
 /*This file contains the game loop.*/
 
-
 #include "board.h"
 #include "input.h"
 #include <stdbool.h>
@@ -49,13 +48,9 @@ int main(int argc, char *argv[]) {
 
   // this is why we can't have a gridheight > 9 and a gridwidth > 6
   int trapped_tiles[6][9] = {
-    {0, 0, 1, 0, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 1, 0, 0},
-    {0, 0, 0, 0, 1, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 1, 0, 0, 0},
-    {0, 0, 0, 1, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 0, 0, 1, 0}
-  };
+      {0, 0, 1, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 1, 0, 0},
+      {0, 0, 0, 0, 1, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 1, 0, 0, 0},
+      {0, 0, 0, 1, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 1, 0}};
 
   board_t b;
 
@@ -93,7 +88,8 @@ int main(int argc, char *argv[]) {
         }
       }
 
-      // let's ask the player if they want to move a hedgehog, in case it's possible
+      // let's ask the player if they want to move a hedgehog, in case it's
+      // possible
       bool move_hedgehog = false;
       if (can_move) {
         printf("Would you like to move a hedgehog? (Y/n) ");
