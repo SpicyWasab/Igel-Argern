@@ -1,3 +1,6 @@
+/*This module manages the board's structure (board_t)*/
+
+
 #include "board.h"
 #include <assert.h>
 #include <stdbool.h>
@@ -18,6 +21,7 @@ int board_height(board_t *b, int line, int row) {
   return b->tiles[GRIDWIDTH * line + row].top + 1;
 }
 
+//Does not check if there actually is one !!!
 char board_top(board_t *b, int line, int row) {
   int top = (b->tiles[GRIDWIDTH * line + row].top);
   return b->tiles[GRIDWIDTH * line + row].stack[top];

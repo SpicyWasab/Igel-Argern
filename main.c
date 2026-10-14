@@ -1,3 +1,6 @@
+/*This file contains the game loop.*/
+
+
 #include "board.h"
 #include "input.h"
 #include <stdbool.h>
