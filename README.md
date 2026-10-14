@@ -1,5 +1,14 @@
-## Igel Ärgern
+# Igel Ärgern
 ## Description
+Rendu réalisé en binôme du TP5 de SYS en 1A info à l'ENS Rennes.
+
+## Rapport
+Le rapport demandé pour le rendu est disponible dans le fichier racine report.pdf. Ce README ne contient que des informations pratiques sur le projet.
+
+## Build
+Utiliser `make` pour créer une version de développement, et `make prod` pour une version de production (respectivement, avec ou sans le flag `-g`).
+
+## Structure du code
 ### board.c et board.h
 Ces fichiers gèrent la structure du plateau elle-même, ainsi que les fonctions la manipulant, permettant dans les autres fichiers de coder en ignorant le plus possible les spécificités de la structure.
 
@@ -8,7 +17,6 @@ Ces fichiers servent à demander des entrées à l'utilisateur de manière sécu
 
 ### main.c
 Ce fichier contient la boucle de jeu, et constitue donc la colle qui réunit le reste.
-
 
 ## Extensions
 ### Le hérisson dopé
