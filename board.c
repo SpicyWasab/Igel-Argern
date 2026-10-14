@@ -63,6 +63,11 @@ void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]) {
         b->tiles[GRIDWIDTH * line + row].trapped = false;
       }
       b->tiles[GRIDWIDTH * line + row].top = -1;
+
+      // let's initialize stack as well in order to avoid some valgrind warning, even though we don't need to
+      for(int i = 0 ; i < PLAYERCOUNT * HEDGEHOGSPERPLAYER ; i++) {
+        b->tiles[GRIDWIDTH * line + row].stack[i] = '0';
+      }
     }
   }
 

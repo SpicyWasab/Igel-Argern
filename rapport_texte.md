@@ -1,5 +1,5 @@
 #Membres:
-Nicolas-Zuang Lalung (TEMPS PASSE), Laure-Élise Tousch (temps passé : ~12h)
+Nicolas-Zuang Lalung (~12h), Laure-Élise Tousch (temps passé : ~14h)
 http://www.gamecabinet.com/rules/IgelArgernVariants.html
 ##Introduction
 

@@ -47,7 +47,9 @@ int main(int argc, char *argv[]) {
 
   srand(time(NULL));
 
-  int trapped_tiles[GRIDHEIGHT][GRIDWIDTH] = {{0, 0, 1}, {0, 0, 0}, {0, 0, 0}};
+  int trapped_tiles[GRIDHEIGHT][GRIDWIDTH] = {
+    {0, 0, 1}, {0, 0, 0}, {0, 0, 0}
+  };
 
   board_t b;
 
@@ -73,6 +75,8 @@ int main(int argc, char *argv[]) {
       printf("We roll... a %d !\n", rolled_line + 1);
 
       board_print(&b, rolled_line + 1);
+
+      // let's check if the player can move a hedgehog
       bool can_move = false;
       for (int row = 0; row < GRIDWIDTH; row++) {
         for (int line = 0; line < GRIDHEIGHT; line++) {
@@ -82,6 +86,8 @@ int main(int argc, char *argv[]) {
           }
         }
       }
+
+      // let's ask the player if they want to move a hedgehog, in case it's possible
       bool move_hedgehog = false;
       if (can_move) {
         printf("Would you like to move a hedgehog? (Y/n) ");
@@ -90,6 +96,7 @@ int main(int argc, char *argv[]) {
         printf("You have no hedgehog to move up or down.\n");
       }
 
+      // if the player wants to move a hedgehog up or down
       if (move_hedgehog) {
         char movement[3];
         input_move(movement);
@@ -146,13 +153,14 @@ int main(int argc, char *argv[]) {
           move_sandwich = input_YN();
         }
 
+        // if they want to move the sandwich
         if (move_sandwich) {
           if (dir == 'T' || dir == 't') {
             board_sandwich(&b, line, row, line - 1, row);
           } else {
             board_sandwich(&b, line, row, line + 1, row);
           }
-        } else {
+        } else { // otherwise, just move the top hedgehog
           if (dir == 'T' || dir == 't') {
             board_pop(&b, line, row);
             board_push(&b, line - 1, row, player_name);
