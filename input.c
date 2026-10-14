@@ -56,7 +56,7 @@ bool input_YN() {
 // asks the user for a valid move and writes it
 void input_move(char result[3]) {
   // Format RowLineDirection (CAPS) - example : A1T, D3B
-  printf("What is your move? Ex : A1B, B3T... (Square+Top/Bottom)");
+  printf("What is your move? Ex : A1D, B3U... (Square+Up/Down)");
 
   char move[5]; // this will hold the input
 
@@ -67,8 +67,8 @@ void input_move(char result[3]) {
       if (move[0] >= 'A' &&
           move[0] <= 'Z') { // if first char is in the alphabet
         if (move[1] >= '0' && move[1] <= '9') { // if second char is a digit
-          if (move[2] == 'T' || move[2] == 't' || move[2] == 'B' ||
-              move[2] == 'b') { // if third char is a move
+          if (move[2] == 'U' || move[2] == 'u' || move[2] == 'D' ||
+              move[2] == 'd') { // if third char is a move
             // let's copy the input and interrupt the function
             result[0] = move[0];
             result[1] = move[1];

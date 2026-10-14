@@ -3,10 +3,10 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#define GRIDHEIGHT 3
-#define GRIDWIDTH 3
-#define PLAYERCOUNT 2
-#define HEDGEHOGSPERPLAYER 2
+#define GRIDHEIGHT 6 // don't forget to change the trapped_tiles table in main.c to match this coordinates in case there's MORE than 6×9
+#define GRIDWIDTH 9 // see above comment, but in all cases avoiding to put more than 6×9 is preferable
+#define PLAYERCOUNT 4
+#define HEDGEHOGSPERPLAYER 4
 
 struct cell {
   char stack[PLAYERCOUNT * HEDGEHOGSPERPLAYER]; // Uppercase letters
@@ -39,7 +39,7 @@ void board_add_won_hedgehog(board_t *b, int player);
 
 int board_get_won_hedgehogs(board_t *b, int player);
 
-void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]);
+void board_init(board_t *b, int trapped[6][9]);
 
 int board_sandwich_size(board_t *b, int line, int row);
 

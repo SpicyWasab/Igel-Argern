@@ -54,7 +54,7 @@ int board_get_won_hedgehogs(board_t *b, int player) {
   return b->won_hedgehogs[player];
 }
 
-void board_init(board_t *b, int trapped[GRIDHEIGHT][GRIDWIDTH]) {
+void board_init(board_t *b, int trapped[6][9]) {
   for (int line = 0; line < GRIDHEIGHT; line++) {
     for (int row = 0; row < GRIDWIDTH; row++) {
       if (trapped[line][row] == 1) {

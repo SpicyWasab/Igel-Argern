@@ -47,8 +47,14 @@ int main(int argc, char *argv[]) {
 
   srand(time(NULL));
 
-  int trapped_tiles[GRIDHEIGHT][GRIDWIDTH] = {
-    {0, 0, 1}, {0, 0, 0}, {0, 0, 0}
+  // this is why we can't have a gridheight > 9 and a gridwidth > 6
+  int trapped_tiles[6][9] = {
+    {0, 0, 1, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 1, 0, 0},
+    {0, 0, 0, 0, 1, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 1, 0, 0, 0},
+    {0, 0, 0, 1, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 1, 0}
   };
 
   board_t b;
@@ -126,9 +132,9 @@ int main(int argc, char *argv[]) {
             passed = false;
 
           } else if (passed &&
-                     ((dir == 'T' && line < 1) || (dir == 't' && line < 1) ||
-                      (dir == 'B' && line >= GRIDHEIGHT - 1) ||
-                      (dir == 'b' && line >= GRIDHEIGHT - 1))) {
+                     ((dir == 'U' && line < 1) || (dir == 'u' && line < 1) ||
+                      (dir == 'D' && line >= GRIDHEIGHT - 1) ||
+                      (dir == 'd' && line >= GRIDHEIGHT - 1))) {
             printf("You cannot move there\n");
             passed = false;
           }
@@ -155,13 +161,13 @@ int main(int argc, char *argv[]) {
 
         // if they want to move the sandwich
         if (move_sandwich) {
-          if (dir == 'T' || dir == 't') {
+          if (dir == 'U' || dir == 'u') {
             board_sandwich(&b, line, row, line - 1, row);
           } else {
             board_sandwich(&b, line, row, line + 1, row);
           }
         } else { // otherwise, just move the top hedgehog
-          if (dir == 'T' || dir == 't') {
+          if (dir == 'U' || dir == 'u') {
             board_pop(&b, line, row);
             board_push(&b, line - 1, row, player_name);
           } else {
@@ -175,7 +181,7 @@ int main(int argc, char *argv[]) {
       // minus 1 because hedgehogs on the last row crossed the finishline and
       // are not movable anymore
       if (board_is_line_empty(&b, rolled_line, GRIDWIDTH - 1)) {
-        printf("Line %d has no more movable hedgehog; no more actions needed\n",
+        printf("Line %d has no movable hedgehog; no more actions needed\n",
                rolled_line + 1);
       } else {
         int col = input_column() - 'A';
