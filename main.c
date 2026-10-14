@@ -9,10 +9,10 @@
 
 int roll_dice() { return rand() % 6 + 1; }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
   // let's define some variables for extensions
-  // since we only implement 2 simple extensions, there is no need to put this in another struct / file yet
-  // EXTENSION 1 : doping
+  // since we only implement 2 simple extensions, there is no need to put this
+  // in another struct / file yet EXTENSION 1 : doping
   bool ext_hedgehog_on_drugs = false;
   bool ext_doped_hedgehog_finished = false;
 
@@ -20,22 +20,24 @@ int main(int argc, char* argv[]) {
   bool ext_sandwiches = false;
 
   // let's see if the user enabled some extensions...
-  if(argc == 2) {
+  if (argc == 2) {
     printf("Enabling extensions...\n");
     // let's see the codes of enabled extensions
-    for(int i = 0 ; argv[1][i] != '\0' ; i++) {
-      switch(argv[1][i]) {
-        case 'd':
-          if(!ext_hedgehog_on_drugs) printf("<Doping hedgehog> enabled\n");
-          ext_hedgehog_on_drugs = true;
-          break;
-        case 's':
-          if(!ext_sandwiches) printf("<Sandwiches> enabled\n");
-          ext_sandwiches = true;
-          break;
-        default:
-          printf("WARNING : unrecognized extension code %c\n", argv[1][i]);
-          break;
+    for (int i = 0; argv[1][i] != '\0'; i++) {
+      switch (argv[1][i]) {
+      case 'd':
+        if (!ext_hedgehog_on_drugs)
+          printf("<Doping hedgehog> enabled\n");
+        ext_hedgehog_on_drugs = true;
+        break;
+      case 's':
+        if (!ext_sandwiches)
+          printf("<Sandwiches> enabled\n");
+        ext_sandwiches = true;
+        break;
+      default:
+        printf("WARNING : unrecognized extension code %c\n", argv[1][i]);
+        break;
       }
     }
   }
@@ -50,9 +52,9 @@ int main(int argc, char* argv[]) {
 
   // placing hedgehogs, because the game is a bit boring when there aren't any
   // hedgehogs yet
-  for(int player = 0 ; player < PLAYERCOUNT ; player++) {
+  for (int player = 0; player < PLAYERCOUNT; player++) {
     for (int i = 0; i < HEDGEHOGSPERPLAYER; i++) {
-        board_push(&b, roll_dice() % GRIDHEIGHT, 0, player + 'A');
+      board_push(&b, roll_dice() % GRIDHEIGHT, 0, player + 'A');
     }
   }
 
@@ -61,7 +63,7 @@ int main(int argc, char* argv[]) {
   while (!game_over) {
     for (int player = 0; player < PLAYERCOUNT; player++) {
       int player_name = player + 'A';
-      printf("Au tour du joueur %c ! \n", player_name);
+      printf("Player %c's turn ! \n", player_name);
 
       int rolled_line = (roll_dice() - 1) % (GRIDHEIGHT);
 
@@ -129,14 +131,17 @@ int main(int argc, char* argv[]) {
           }
         }
 
-        // let's check if the hedgehog forms a sandwich, if the extension is enabled
+        // let's check if the hedgehog forms a sandwich, if the extension is
+        // enabled
         bool move_sandwich = false;
-        if(ext_sandwiches && board_sandwich_size(&b, line, row) != 0) {
-          printf("Two of your hedgehogs appear to form a sandwich. Do you want to move the whole sandwich? (Y/n) ");
+        if (ext_sandwiches && board_sandwich_size(&b, line, row) != 0 &&
+            player_name == board_top(&b, line, row)) {
+          printf("Two of your hedgehogs appear to form a sandwich. Do you want "
+                 "to move the whole sandwich? (Y/n) ");
           move_sandwich = input_YN();
         }
 
-        if(move_sandwich) {
+        if (move_sandwich) {
           if (dir == 'T' || dir == 't') {
             board_sandwich(&b, line, row, line - 1, row);
           } else {
@@ -154,7 +159,8 @@ int main(int argc, char* argv[]) {
         board_print(&b, rolled_line + 1);
       }
 
-      // minus 1 because hedgehogs on the last row crossed the finishline and are not movable anymore
+      // minus 1 because hedgehogs on the last row crossed the finishline and
+      // are not movable anymore
       if (board_is_line_empty(&b, rolled_line, GRIDWIDTH - 1)) {
         printf("Line %d has no more movable hedgehog; no more actions needed\n",
                rolled_line + 1);
@@ -187,38 +193,49 @@ int main(int argc, char* argv[]) {
         }
 
         bool move_sandwich = false;
-        if(ext_sandwiches && board_sandwich_size(&b, rolled_line, col) != 0) {
-          printf("Two of these hedgehogs appear to form a sandwich. Do you want to move the whole sandwich? (Y/n) ");
+        if (ext_sandwiches && board_sandwich_size(&b, rolled_line, col) != 0 &&
+            player_name == board_top(&b, rolled_line, col)) {
+          printf("Two of these hedgehogs appear to form a sandwich. Do you "
+                 "want to move the whole sandwich? (Y/n) ");
           move_sandwich = input_YN();
         }
 
-        if(move_sandwich) {
+        if (move_sandwich) {
           int sandwich_size = board_sandwich_size(&b, rolled_line, col);
           board_sandwich(&b, rolled_line, col, rolled_line, col + 1);
 
           // let's check if it was the finish line
           if (col + 1 == GRIDWIDTH - 1) {
-            // let's see if one of the hedgehogs was doped (IMPORTANT : I decided to only consider the first hedgehog (aka, the player that played) to be doped)
+            // let's see if one of the hedgehogs was doped (IMPORTANT : I
+            // decided to only consider the first hedgehog (aka, the player that
+            // played) to be doped)
             int start_i = 0; // this will make sense a few lines below
-            if(ext_hedgehog_on_drugs && !ext_doped_hedgehog_finished) {
-              printf("This hedgehog crossed the finish line ! However, its performance was so good it was accused of doping. Too bad !\n");
-              board_pop(&b, rolled_line, col + 1); // actually, the rules specify that it should be "taken out of the game"
+            if (ext_hedgehog_on_drugs && !ext_doped_hedgehog_finished) {
+              printf("This hedgehog crossed the finish line ! However, its "
+                     "performance was so good it was accused of doping. Too "
+                     "bad !\n");
+              board_pop(&b, rolled_line,
+                        col + 1); // actually, the rules specify that it should
+                                  // be "taken out of the game"
               ext_doped_hedgehog_finished = true;
-              start_i = 1; // about the for loop below, we skip the first hedgehog, since it's the doped one
+              start_i = 1; // about the for loop below, we skip the first
+                           // hedgehog, since it's the doped one
             }
 
-            // let's add all hedgehogs that just crossed the finish line to b->won_hedgehogs
+            // let's add all hedgehogs that just crossed the finish line to
+            // b->won_hedgehogs
             cell_t c = b.tiles[GRIDWIDTH * rolled_line + col + 1];
-            for(int i = start_i ; i < sandwich_size ; i++) {
+            for (int i = start_i; i < sandwich_size; i++) {
               int hedgehog = c.stack[c.top - i];
               int hedgehog_team = hedgehog - 'A';
               board_add_won_hedgehog(&b, hedgehog_team);
               // using >= so that it ends the game even if there's only one
               // hedgehog per player
               if (!game_over && board_get_won_hedgehogs(&b, hedgehog_team) >=
-                  HEDGEHOGSPERPLAYER - 1) {
+                                    HEDGEHOGSPERPLAYER - 1) {
                 game_over = true;
-                printf("A team successfully crossed the finish line ; this game will end at the end of this turn !\n");
+                printf("\nA team successfully crossed the finish line ; this "
+                       "game will end at the end of this turn !\n\n");
               }
             }
           }
@@ -228,20 +245,25 @@ int main(int argc, char* argv[]) {
           board_push(&b, rolled_line, col + 1, hedgehog);
 
           if (col + 1 == GRIDWIDTH - 1) {
-            // one hedgehog crossed the finish line ! however, we don't care if it's the doped one...
-            if(ext_hedgehog_on_drugs && !ext_doped_hedgehog_finished) {
-              printf("This hedgehog crossed the finish line ! However, its performance was so good it was accused of doping. Too bad !\n");
-              board_pop(&b, rolled_line, col + 1); // actually, the rules specify that it should be "taken out of the game"
+            // one hedgehog crossed the finish line ! however, we don't care if
+            // it's the doped one...
+            if (ext_hedgehog_on_drugs && !ext_doped_hedgehog_finished) {
+              printf("This hedgehog crossed the finish line ! However, its "
+                     "performance was so good it was accused of doping. Too "
+                     "bad !\n");
+              board_pop(&b, rolled_line,
+                        col + 1); // actually, the rules specify that it should
+                                  // be "taken out of the game"
               ext_doped_hedgehog_finished = true;
-            }
-            else {
+            } else {
               board_add_won_hedgehog(&b, hedgehog_team);
               // using >= so that it ends the game even if there's only one
               // hedgehog per player
               if (!game_over && board_get_won_hedgehogs(&b, hedgehog_team) >=
-                  HEDGEHOGSPERPLAYER - 1) {
+                                    HEDGEHOGSPERPLAYER - 1) {
                 game_over = true;
-                printf("A team successfully crossed the finish line ; this game will end at the end of this turn !\n");
+                printf("A team successfully crossed the finish line ; this "
+                       "game will end at the end of this turn !\n");
               }
             }
           }
@@ -254,24 +276,26 @@ int main(int argc, char* argv[]) {
   printf("=== GAME OVER ===\n");
   int place = 1;
   // let's print the leaderboard
-  for (int hedgehog_count = HEDGEHOGSPERPLAYER; hedgehog_count >= 0 && place <= PLAYERCOUNT;
-       hedgehog_count--) {
+  for (int hedgehog_count = HEDGEHOGSPERPLAYER;
+       hedgehog_count >= 0 && place <= PLAYERCOUNT; hedgehog_count--) {
     // let's find out if a team actually won with that many hedgehogs
     bool valid_count = false;
-    for(int player = 0 ; player < PLAYERCOUNT ; player++) {
-        if(board_get_won_hedgehogs(&b, player) == hedgehog_count) valid_count = true;
+    for (int player = 0; player < PLAYERCOUNT; player++) {
+      if (board_get_won_hedgehogs(&b, player) == hedgehog_count)
+        valid_count = true;
     }
 
-    // we should only print this line of the leaderboard if at least someone won with that many hedgehogs
-    if(valid_count) {
-        printf("Place #%d : ", place);
-        for (int player = 0; player < PLAYERCOUNT; player++) {
-          if (board_get_won_hedgehogs(&b, player) == hedgehog_count) {
-            printf("équipe %c, ", player + 'A');
-            place++;
-          }
+    // we should only print this line of the leaderboard if at least someone won
+    // with that many hedgehogs
+    if (valid_count) {
+      printf("Place #%d : ", place);
+      for (int player = 0; player < PLAYERCOUNT; player++) {
+        if (board_get_won_hedgehogs(&b, player) == hedgehog_count) {
+          printf("équipe %c, ", player + 'A');
+          place++;
         }
-        printf("avec %d hérissons\n", hedgehog_count);
+      }
+      printf("avec %d hérissons\n", hedgehog_count);
     }
   }
 

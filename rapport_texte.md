@@ -1,5 +1,5 @@
 #Membres:
-Nicolas-Zuang Lalung (TEMPS PASSE), Laure-Élise Tousch (temps passé : ~10h)
+Nicolas-Zuang Lalung (TEMPS PASSE), Laure-Élise Tousch (temps passé : ~12h)
 http://www.gamecabinet.com/rules/IgelArgernVariants.html
 ##Introduction
 
@@ -8,7 +8,7 @@ Nous avons implémenté le jeu Igel Ärgern, un jeu de stratégie à plusieurs j
 ##Description
 
 ###board.c et board.h
-Ces fichiers gèrent la structure du plateau elle-même, ainsi que les fonctions la manipulant, permettant dans les autres fichiers de coder en ignorant les spécificités de la structure.
+Ces fichiers gèrent la structure du plateau elle-même, ainsi que les fonctions la manipulant, permettant dans les autres fichiers de coder en ignorant le plus possible les spécificités de la structure.
 
 ###input.c et input.h
 Ces fichiers servent à demander des entrées à l'utilisateur de manière sécurisée, pour éviter que le code plante sur une mauvaise entrée.
