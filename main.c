@@ -77,6 +77,7 @@ int main(int argc, char* argv[]) {
       }
       bool move_hedgehog = false;
       if (can_move) {
+        printf("Would you like to move a hedgehog? (Y/n) ");
         move_hedgehog = input_YN();
       } else {
         printf("You have no hedgehog to move up or down.\n");
@@ -127,12 +128,28 @@ int main(int argc, char* argv[]) {
             dir = movement[2];
           }
         }
-        if (dir == 'T' || dir == 't') {
-          board_pop(&b, line, row);
-          board_push(&b, line - 1, row, player_name);
+
+        // let's check if the hedgehog forms a sandwich, if the extension is enabled
+        bool move_sandwich = false;
+        if(ext_sandwiches && board_sandwich_size(&b, line, row) != 0) {
+          printf("Two of your hedgehogs appear to form a sandwich. Do you want to move the whole sandwich? (Y/n) ");
+          move_sandwich = input_YN();
+        }
+
+        if(move_sandwich) {
+          if (dir == 'T' || dir == 't') {
+            board_sandwich(&b, line, row, line - 1, row);
+          } else {
+            board_sandwich(&b, line, row, line + 1, row);
+          }
         } else {
-          board_pop(&b, line, row);
-          board_push(&b, line + 1, row, player_name);
+          if (dir == 'T' || dir == 't') {
+            board_pop(&b, line, row);
+            board_push(&b, line - 1, row, player_name);
+          } else {
+            board_pop(&b, line, row);
+            board_push(&b, line + 1, row, player_name);
+          }
         }
         board_print(&b, rolled_line + 1);
       }
@@ -141,9 +158,7 @@ int main(int argc, char* argv[]) {
         printf("Line %d has no more movable hedgehog; no more actions needed\n",
                rolled_line + 1);
       } else {
-
         int col = input_column() - 'A';
-
 
         bool move_ok = false;
 
@@ -170,23 +185,59 @@ int main(int argc, char* argv[]) {
           }
         }
 
-        char hedgehog = board_pop(&b, rolled_line, col);
-        int hedgehog_team = hedgehog - 'A';
-        board_push(&b, rolled_line, col + 1, hedgehog);
+        bool move_sandwich = false;
+        if(ext_sandwiches && board_sandwich_size(&b, rolled_line, col) != 0) {
+          printf("Two of these hedgehogs appear to form a sandwich. Do you want to move the whole sandwich? (Y/n) ");
+          move_sandwich = input_YN();
+        }
 
-        if (col + 1 == GRIDWIDTH - 1) {
-          // one hedgehog crossed the finish line ! however, we don't care if it's the doped one...
-          if(ext_hedgehog_on_drugs && !ext_doped_hedgehog_finished) {
-            printf("This hedgehog crossed the finish line ! However, its performance was so good it was accused of doping. Too bad !\n");
-            ext_doped_hedgehog_finished = true;
+        if(move_sandwich) {
+          int sandwich_size = board_sandwich_size(&b, rolled_line, col);
+          board_sandwich(&b, rolled_line, col, rolled_line, col + 1);
+
+          // let's check if it was the finish line
+          if (col + 1 == GRIDWIDTH - 1) {
+            // let's see if one of the hedgehogs was doped (IMPORTANT : I decided to only consider the first hedgehog (aka, the player that played) to be doped)
+            int start_i = 0; // this will make sense a few lines below
+            if(ext_hedgehog_on_drugs && !ext_doped_hedgehog_finished) {
+              printf("This hedgehog crossed the finish line ! However, its performance was so good it was accused of doping. Too bad !\n");
+              ext_doped_hedgehog_finished = true;
+              start_i = 1; // about the for loop below, we skip the first hedgehog, since it's the doped one
+            }
+
+            // let's add all hedgehogs that just crossed the finish line to b->won_hedgehogs
+            cell_t c = b.tiles[GRIDWIDTH * rolled_line + col + 1];
+            for(int i = start_i ; i < sandwich_size ; i++) {
+              int hedgehog = c.stack[c.top - i];
+              int hedgehog_team = hedgehog - 'A';
+              board_add_won_hedgehog(&b, hedgehog_team);
+              // using >= so that it ends the game even if there's only one
+              // hedgehog per player
+              if (board_get_won_hedgehogs(&b, hedgehog_team) >=
+                  HEDGEHOGSPERPLAYER - 1) {
+                game_over = true;
+              }
+            }
           }
-          else {
-            board_add_won_hedgehog(&b, hedgehog_team);
-            // using >= so that it ends the game even if there's only one
-            // hedgehog per player
-            if (board_get_won_hedgehogs(&b, hedgehog_team) >=
-                HEDGEHOGSPERPLAYER - 1) {
-              game_over = true;
+        } else {
+          char hedgehog = board_pop(&b, rolled_line, col);
+          int hedgehog_team = hedgehog - 'A';
+          board_push(&b, rolled_line, col + 1, hedgehog);
+
+          if (col + 1 == GRIDWIDTH - 1) {
+            // one hedgehog crossed the finish line ! however, we don't care if it's the doped one...
+            if(ext_hedgehog_on_drugs && !ext_doped_hedgehog_finished) {
+              printf("This hedgehog crossed the finish line ! However, its performance was so good it was accused of doping. Too bad !\n");
+              ext_doped_hedgehog_finished = true;
+            }
+            else {
+              board_add_won_hedgehog(&b, hedgehog_team);
+              // using >= so that it ends the game even if there's only one
+              // hedgehog per player
+              if (board_get_won_hedgehogs(&b, hedgehog_team) >=
+                  HEDGEHOGSPERPLAYER - 1) {
+                game_over = true;
+              }
             }
           }
         }
